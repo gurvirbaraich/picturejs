@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Zoom</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .canvas {
+            width: 50%;
+            border: 2px solid red;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .container canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-blend-mode: screen;
+        }
+
+        .output {
+            border: 2px solid #000;
+            width: 50%;
+            height: 100%;
+        }
+
+        .output canvas {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="canvas">
+        <div class="container"></div>
+    </div>
+    <div class="output">
+        <canvas class="preview"></canvas>
+    </div>
+    <script src="app.js" type="module"></script>
+</body>
+</html>
