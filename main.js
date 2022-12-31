@@ -107,16 +107,8 @@ class ImageHandler {
       // Clearing the canvas everytime the mouse moves
       lensContext.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Setting the color of the lens canvas
-      lensContext.fillStyle = options.lens.color;
-
-      // Drawing rectangle on lens canvas
-      lensContext.fillRect(
-         e.clientX - lens.width / 2,
-         e.clientY - lens.height / 2,
-         lens.width,
-         lens.height
-      );
+      lens.config.loadOnto(this.#canvas.parentElement);
+      lens.display(e, canvas, options);
 
       this.#updatePreview(
          lens,
@@ -195,8 +187,10 @@ class LensBase extends EventEmitter {
 
    /**
     * @param {HTMLElement} #container
+    * @param {HTMLElement} #lensContainer
     */
    #container = undefined;
+   #lensContainer = undefined;
 
    get width() {
       return this.#width;
@@ -210,8 +204,20 @@ class LensBase extends EventEmitter {
       return this.#container;
    }
 
-   get lens() {
+   get config() {
       return {
+         /**
+          * 
+          * @param {HTMLElement | string} container 
+          */
+         outputOnto: (container) => {
+            if (!(container instanceof HTMLElement)) {
+               container = document.querySelector(container);
+            }
+
+            this.#container = container;
+         },
+
          /**
           * 
           * @param {HTMLElement | string} container 
@@ -221,7 +227,7 @@ class LensBase extends EventEmitter {
                container = document.querySelector(container);
             }
 
-            this.#container = container;
+            this.#lensContainer = container;
          }
       }
    }
@@ -238,6 +244,26 @@ class LensBase extends EventEmitter {
       this.#height = height;
    }
 
+   /**
+    * 
+    * @param {HTMLCanvasElement} canvas
+    */
+   display(e, canvas, options) {
+      const context = canvas.getContext("2d");
+
+      // Setting the color of the lens canvas
+      context.fillStyle = options.lens.color;
+
+      // Drawing rectangle on lens canvas
+      context.fillRect(
+         e.clientX - this.#width / 2,
+         e.clientY - this.#height / 2,
+         this.#width,
+         this.#height
+      );
+
+      this.#lensContainer.appendChild(canvas);
+   }
 }
 
 class Lens extends LensBase {
