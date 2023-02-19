@@ -1,5 +1,4 @@
-// Importing PictureJS from the module
-import PictureJS from './main.js';
+console.log(window["PictureJS"])
 
 // Creating a lens
 const lens = new PictureJS.Lens(
